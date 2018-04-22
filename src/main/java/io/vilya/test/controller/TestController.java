@@ -1,7 +1,7 @@
 /**
  * cometd-test io.vilya.cometd.controller
  */
-package io.vilya.cometd.controller;
+package io.vilya.test.controller;
 
 import com.jfinal.core.Controller;
 

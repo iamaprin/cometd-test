@@ -1,7 +1,7 @@
 /**
  * cometd-test io.vilya.cometd.service.cometd.impl
  */
-package io.vilya.cometd.service.cometd.impl;
+package io.vilya.test.service.cometd;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -15,83 +15,75 @@ import org.cometd.bayeux.Channel;
 import org.cometd.bayeux.server.BayeuxServer;
 import org.cometd.bayeux.server.ConfigurableServerChannel;
 import org.cometd.bayeux.server.LocalSession;
-import org.cometd.bayeux.server.ServerChannel;
 import org.cometd.bayeux.server.ServerMessage;
 import org.cometd.bayeux.server.ServerSession;
 import org.cometd.server.authorizer.GrantAuthorizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.vilya.cometd.service.Manager;
-import io.vilya.cometd.service.cometd.ICometdService;
-
 /**
  * @author iamaprin
  * 2017年1月9日 下午10:39:34
  */
 @Service("test")
-public class TestCometdService implements ICometdService {
+public class CometdService {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(TestCometdService.class);
+	private static final Logger logger = LoggerFactory.getLogger(CometdService.class);
 	
 	@Inject
-	BayeuxServer bayeux;
+	private BayeuxServer bayeux;
 	
 	@Session
-	LocalSession localSession;
+	private LocalSession localSession;
 	
 	@Session
-	ServerSession serverSession;
+	private ServerSession serverSession;
 	
-	@Configure("/service/test")
+	
+	@Configure("/**")
 	public void testServiceConfigure(ConfigurableServerChannel channel) {
-        channel.setLazy(true);
-        channel.addAuthorizer(GrantAuthorizer.GRANT_PUBLISH);
-	}
-	
-	@Override
-	public void publish() {
-		String _channel = "/service/test";
-		ServerMessage.Mutable message = bayeux.newMessage();
-        message.setChannel(_channel);
-        message.setData("testtesttest");
-        //message.setLazy(true);
-        bayeux.getChannel(_channel).publish(localSession, message);
+        channel.addAuthorizer(GrantAuthorizer.GRANT_SUBSCRIBE);
 	}
 	
 	@PostConstruct
 	public void postConstruct() {
-		Manager.INSTANCE.setService(this);
+		// nothing    
 	}
 	
 	@PreDestroy
 	public void preDestory() {
-		
+	    // nothing
+	}
+	
+	@Listener("/**")
+	public void onTest(ServerSession remote, ServerMessage.Mutable message) {
+		logger.info("testService: {} | remote: {}", message, remote ==null ? null : remote.getId());
 	}
  	
 	@Listener(Channel.META_HANDSHAKE)
 	public void metaHandShake(ServerSession remote, ServerMessage.Mutable message) {
-		LOG.info("metahandShake: " + message);
+	    logger.info("metaHandShake: {} | remote: {}", message, remote ==null ? null : remote.getId());
 	}
+	
 	
 	@Listener(Channel.META_SUBSCRIBE)
 	public void metaSubscribe(ServerSession remote, ServerMessage.Mutable message) {
-		LOG.info("metaSubscribe: " + message);
+	    logger.info("metaSubscribe: {} | remote: {}", message, remote ==null ? null : remote.getId());
 	}
 	
 	@Listener(Channel.META_UNSUBSCRIBE)
 	public void metaUnSubscribe(ServerSession remote, ServerMessage.Mutable message) {
-		LOG.info("metaUnSubscribe: " + message);
+	    logger.info("metaUnSubscribe: {} | remote: {}", message, remote ==null ? null : remote.getId());
 	}
 	
 	@Listener(Channel.META_CONNECT)
 	public void metaConnect(ServerSession remote, ServerMessage.Mutable message) {
-		LOG.info("metaConnect: " + message);
+	    logger.info("metaConnect: {} | remote: {}", message, remote ==null ? null : remote.getId());
 	}
 	
 	@Listener(Channel.META_DISCONNECT)
 	public void metaDisConnect(ServerSession remote, ServerMessage.Mutable message) {
-		LOG.info("metaDisConnect: " + message);
+	    logger.info("metaDisConnect: {} | remote: {}", message, remote ==null ? null : remote.getId());
 	}
 
 }

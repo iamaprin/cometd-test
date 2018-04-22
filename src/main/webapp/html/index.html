@@ -4,9 +4,29 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <#include "/html/common_attr.html">
-<script src="//cdn.staticfile.org/require.js/2.3.2/require.js" data-main="${ctx}/script/index"></script>
+<script src="//cdn.staticfile.org/require.js/2.3.3/require.js" data-main="${ctx}/script/index"></script>
 </head>
 <body>
+	<h1>cometd test</h1>
+	<div>
+		<h2>publish message:</h2>
+		<form id="form">
+			<label>
+				channel:
+				<input type="text" name="channel" value="/test">
+			</label>
+			<label>
+				message:
+				<input type="text" name="message" value="message">
+			</label>
+			<button type="button" id="submit">submit</button>
+		</form>
+	</div>
+	<div>
+		<h2>on message:</h2>
+		<ol class="on-message">
 
+		</ol>
+	</div>
 </body>
 </html>

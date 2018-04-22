@@ -4,6 +4,24 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
     id="cometd" version="3.0">
 	
+	<listener>
+		<listener-class>io.vilya.test.listener.BayeuxEnvirmentListener</listener-class>
+	</listener>
+	
+	<filter>
+		<filter-name>jfinal</filter-name>
+		<filter-class>com.jfinal.core.JFinalFilter</filter-class>
+		<async-supported>true</async-supported>
+		<init-param>
+			<param-name>configClass</param-name>
+			<param-value>io.vilya.test.ApplicationLauncher</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>jfinal</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
 	<servlet>
         <servlet-name>cometd</servlet-name>
         <servlet-class>org.cometd.annotation.AnnotationCometDServlet</servlet-class>
@@ -33,10 +51,10 @@
         </init-param>
         <init-param>
             <param-name>services</param-name>
-            <param-value>io.vilya.cometd.service.cometd.impl.TestCometdService</param-value>
+            <param-value>io.vilya.test.service.cometd.CometdService</param-value>
         </init-param>
         <init-param>
-            <param-name>ws.cometdURLMapping</param-name>
+            <param-name>cometdURLMapping</param-name>
             <param-value>/cometd/*</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
@@ -47,29 +65,6 @@
         <url-pattern>/cometd/*</url-pattern>
     </servlet-mapping>
 	
-	
-	<filter>
-		<filter-name>jfinal</filter-name>
-		<filter-class>com.jfinal.core.JFinalFilter</filter-class>
-		<async-supported>true</async-supported>
-		<init-param>
-			<param-name>configClass</param-name>
-			<param-value>io.vilya.cometd.common.Launcher</param-value>
-		</init-param>
-	</filter>
-	
-	<filter-mapping>
-		<filter-name>jfinal</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 </web-app>

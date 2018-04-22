@@ -3,7 +3,7 @@ require.config({
     shim: {
     },
     paths: {
-        "jquery": "https://cdn.staticfile.org/jquery/3.1.1/jquery.min",
-        "cometd": "script/cometd/cometd"
+        'cometd': 'script/cometd/cometd',
+        'jquery':　'//cdn.staticfile.org/jquery/3.2.1/jquery'
     }
 });
